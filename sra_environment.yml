@@ -1,0 +1,16 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python
+  - bioconda::sra-tools
+  - bioconda::kmc>=3.0.0
+  - snakemake
+  - pandas
+  - ca-certificates
+  - certifi
+  - openssl
+  - seaborn
+  - pip:
+    - awscli==1.29.20
