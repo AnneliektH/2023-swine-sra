@@ -9,13 +9,13 @@ rule fasterq_dump:
         "logs/fasterq_dump/{sample}.log"
     conda: 
         "envs/sra_environment.yml"
-    benchmark: "reads/fastq/{sample}.benchmark"
+    benchmark: "logs/fasterq_dump/{sample}.benchmark"
     threads: 10
     shell:
         """
         fasterq-dump {input.sra_file} --threads 10 \
         -O ./reads/fasterq/{wildcards.sample}_fq --skip-technical \
         --bufsize 1000MB --curcache 10000MB && \
-        mv ./reads/fasterq/{wildcards.sample}_fq/{wildcards.sample}_* ./reads/fastq/ && \
+        mv ./reads/fasterq/{wildcards.sample}_fq/{wildcards.sample}*.fastq ./reads/fastq/ && \
         touch {output.check}
         """

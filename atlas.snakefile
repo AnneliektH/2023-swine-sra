@@ -10,7 +10,8 @@ rule atlas_init:
         """
         mkdir -p atlas \
         cd ./atlas/ && \
-        atlas init --db-dir ../../database_atlas/ ../reads/ --assembler megahit --threads 10 && \
+        atlas init --db-dir ../../database_atlas/ ../reads/fastq/ \
+        --assembler megahit --threads 10 && \
         touch {output.check}
         """
 
