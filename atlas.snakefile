@@ -16,6 +16,8 @@ rule atlas_init:
         """
 
 # Now use atlas on the files to create MAGs
+# add resources mem bc of the memory problem with bbduk
+# https://github.com/metagenome-atlas/atlas/issues/229
 rule atlas:
     input:
         check="atlas/atlas_init.check"
@@ -28,7 +30,7 @@ rule atlas:
     shell:
         """
         cd ./atlas && \
-        atlas run all && \
+        atlas run all --resources mem=60 && \
         touch {output.check}
         """
 
