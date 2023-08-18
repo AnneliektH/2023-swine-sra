@@ -15,7 +15,6 @@ metadata = pd.read_csv(config['metadata_file_path'], usecols=['Run'])
 # Create a list of run ids
 sra_runs = metadata['Run'].tolist()
 
-
 # Define samples
 SAMPLES = config.get('samples', sra_runs)
 
@@ -24,7 +23,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand("sra/fasterq/{sample}.check", sample=SAMPLES)
+        expand("checks/{sample}_fasterqdump.check", sample=SAMPLES)
 
 
 

@@ -1,0 +1,4 @@
+__default__:
+# default parameter for all rules
+  account: amhorst
+  nodes: 1

@@ -8,8 +8,8 @@ rule download_sra:
         "envs/sra_environment.yml"
     shell:
         """
-        mkdir -p ./sra/ 
-        if [ ! -f "sra/fasterq/{wildcards.sample}.check" ] && [ ! -f "{output.sra}" ]; then
+        mkdir -p sra/
+        if [ ! -f "checks/{wildcards.sample}_fasterqdump.check" ] && [ ! -f "{output.sra}" ]; then
             aws s3 cp --quiet --no-sign-request s3://sra-pub-run-odp/sra/{wildcards.sample}/{wildcards.sample} {output.sra}
         fi
         """
