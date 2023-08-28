@@ -22,7 +22,7 @@ rule atlas:
     input:
         check="atlas/atlas_init.check"
     output:
-        check = "atlas/atlas_done.check"
+        check = touch("atlas/atlas_done.check")
     conda: 
         "atlas"
     benchmark: "atlas/atlas.benchmark"
@@ -30,8 +30,7 @@ rule atlas:
     shell:
         """
         cd ./atlas && \
-        atlas run all --resources mem=60 && \
-        touch {output.check}
+        atlas run all --resources mem=60
         """
 
 
