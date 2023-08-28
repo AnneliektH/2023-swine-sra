@@ -30,7 +30,7 @@ rule atlas:
     shell:
         """
         cd ./atlas && \
-        atlas run all --resources mem=60
+        atlas run all --resources mem=60 -k
         """
 
 
