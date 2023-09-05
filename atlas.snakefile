@@ -20,17 +20,19 @@ rule atlas_init:
 # https://github.com/metagenome-atlas/atlas/issues/229
 rule atlas:
     input:
-        check="atlas/atlas_init.check"
+        check="atlas/check/atlas_init_{sample}.check"
     output:
-        check = touch("atlas/atlas_done.check")
+        check = "atlas/check/atlas_done_{sample}.check",
+        assem = "atlas/check/assemdone_{sample}.check"
     conda: 
         "atlas"
-    benchmark: "atlas/atlas.benchmark"
-    threads: 24
+    benchmark: "atlas/check/atlas_{sample}.benchmark"
     shell:
         """
-        cd ./atlas && \
-        atlas run all --resources mem=60 -k
+        atlas run all --profile cluster -w atlas/atlas_{wildcards.sample} \
+        --resources mem=60 -k || true
+        cp atlas/atlas_{wildcards.sample}/finished_assembly {output.assem} && \
+        touch {output.check}
         """
 
 
