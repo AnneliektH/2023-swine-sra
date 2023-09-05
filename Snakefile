@@ -5,9 +5,13 @@ import pandas as pd
 # include snakefiles
 include: "sra_download.snakefile"
 include: "fasterq_dump.snakefile"
+include: "atlas.snakefile"
 
 # set configfile with samplenames
 configfile: "config.yaml"
+
+# define output atlas dir
+atlas_dir = 'atlas'
 
 # Load the metadata file
 metadata = pd.read_csv(config['metadata_file_path'], usecols=['Run'])
@@ -23,7 +27,6 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand("checks/{sample}_fasterqdump.check", sample=SAMPLES)
-
+        expand("atlas/check/atlas_done_{sample}.check", sample=SAMPLES)
 
 

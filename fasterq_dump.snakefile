@@ -1,9 +1,9 @@
 # Download the whole thing, including smaller reads, as atlas will quality trim
 rule fasterq_dump:
     input:
-        sra_file = "sra/{sample}" 
+        sra_file = "sra/{sample}"
     output:
-        check = "checks/{sample}_fasterqdump.check",
+        check = "checks/{sample}_fasterqdump.check"
         #fastq_gz = "reads/{sample}.fastq.gz"
     log:
         "logs/fasterq_dump/{sample}.log"
@@ -14,8 +14,7 @@ rule fasterq_dump:
     shell:
         """
         fasterq-dump {input.sra_file} --threads 10 \
-        -O ./reads/fasterq/{wildcards.sample}_fq --skip-technical \
+        -O ./reads/fasterq/{wildcards.sample} --skip-technical \
         --bufsize 1000MB --curcache 10000MB && \
-        mv ./reads/fasterq/{wildcards.sample}_fq/{wildcards.sample}*.fastq ./reads/fastq/ && \
         touch {output.check}
         """

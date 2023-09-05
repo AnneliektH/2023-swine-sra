@@ -1,17 +1,15 @@
 # Init atlas with the list of samples
 rule atlas_init:
     input:
-        check="sra/fasterq/{sample}.check"
+        check="checks/{sample}_fasterqdump.check"
     output:
-        check = "atlas/atlas_init.check"
+        check = "atlas/check/atlas_init_{sample}.check"
     conda: 
         "atlas"
     shell:
         """
-        mkdir -p atlas \
-        cd ./atlas/ && \
-        atlas init --db-dir ../../database_atlas/ ../reads/fastq/ \
-        --assembler megahit --threads 10 && \
+        atlas init -w atlas/atlas_{wildcards.sample} --db-dir ../database_atlas/ ./reads/fasterq/{wildcards.sample}/ \
+        --assembler megahit && \
         touch {output.check}
         """
 
@@ -34,6 +32,3 @@ rule atlas:
         cp atlas/atlas_{wildcards.sample}/finished_assembly {output.assem} && \
         touch {output.check}
         """
-
-
-        
