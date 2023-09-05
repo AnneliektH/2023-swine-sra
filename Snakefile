@@ -6,6 +6,7 @@ import pandas as pd
 include: "sra_download.snakefile"
 include: "fasterq_dump.snakefile"
 include: "atlas.snakefile"
+include: "vOTU.snakefile"
 
 # set configfile with samplenames
 configfile: "config.yaml"
@@ -27,6 +28,6 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand("atlas/check/atlas_done_{sample}.check", sample=SAMPLES)
+        expand("virsorter2/checks/{sample}_vs2_done.check", sample=SAMPLES)
 
 

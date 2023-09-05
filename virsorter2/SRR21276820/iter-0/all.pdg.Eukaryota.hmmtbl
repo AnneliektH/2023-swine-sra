@@ -1,0 +1,13 @@
+#                                                               --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name        accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+#
+# Program:         hmmsearch
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SEARCH
+# Query file:      /home/amhorst/db/hmm/pfam/Pfam-A-Eukaryota.hmm
+# Target file:     /tmp/vs2-mTYv78OMwZLa/all.pdg.faa.0.split
+# Option settings: hmmsearch --tblout iter-0/all.pdg.faa.splitdir/all.pdg.faa.0.split.Eukaryota.splithmmtbl --noali -T 30 --cpu 2 /home/amhorst/db/hmm/pfam/Pfam-A-Eukaryota.hmm /tmp/vs2-mTYv78OMwZLa/all.pdg.faa.0.split 
+# Current dir:     /home/amhorst/2023-swine-sra/virsorter2/SRR21276820
+# Date:            Tue Sep  5 14:13:19 2023
+# [ok]
