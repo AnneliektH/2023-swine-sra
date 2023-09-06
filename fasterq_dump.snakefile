@@ -3,7 +3,7 @@ rule fasterq_dump:
     input:
         sra_file = "sra/{sample}"
     output:
-        check = touch("checks/{sample}_fasterqdump.check")
+        check = "reads/check/{sample}_fasterqdump.check"
     log:
         "logs/fasterq_dump/{sample}.log"
     conda: 
@@ -14,5 +14,5 @@ rule fasterq_dump:
         """
         fasterq-dump {input.sra_file} --threads 10 \
         -O ./reads/fasterq/{wildcards.sample} --skip-technical \
-        --bufsize 1000MB --curcache 10000MB
+        --bufsize 1000MB --curcache 10000MB && touch {output.check}
         """

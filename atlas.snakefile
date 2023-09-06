@@ -1,15 +1,17 @@
 # Init atlas with the list of samples
 rule atlas_init:
     input:
-        check="checks/{sample}_fasterqdump.check"
+        check="reads/check/{sample}_fasterqdump.check"
     output:
-        check = touch("atlas/check/atlas_init_{sample}.check")
+        check = "atlas/check/atlas_init_{sample}.check"
+    log:
+        "logs/atlas/{sample}_init.log"
     conda: 
         "atlas"
     shell:
         """
         atlas init -w atlas/atlas_{wildcards.sample} --db-dir ../database_atlas/ ./reads/fasterq/{wildcards.sample}/ \
-        --assembler megahit
+        --assembler megahit && touch {output.check}
         """
 
 # Now use atlas on the files to create MAGs
@@ -20,9 +22,11 @@ rule atlas_assembly:
         check="atlas/check/atlas_init_{sample}.check"
     output:
         assem = "atlas/check/assemdone_{sample}.check"
+    log:
+        "logs/atlas/{sample}_assembly.log"
     conda: 
         "atlas"
-    benchmark: "atlas/check/atlas_{sample}_assem.benchmark"
+    benchmark: "atlas/benchmark/atlas_{sample}_assem.benchmark"
     shell:
         """
         atlas run assembly --profile cluster -w atlas/atlas_{wildcards.sample} \
@@ -35,12 +39,14 @@ rule atlas_binning:
     input:
         check="atlas/check/assemdone_{sample}.check"
     output:
-        check = touch("atlas/check/atlas_done_{sample}.check")
+        check = "atlas/check/atlas_done_{sample}_bin.check"
+    log:
+        "logs/atlas/{sample}_bin.log"
     conda: 
         "atlas"
-    benchmark: "atlas/check/atlas_{sample}_bin.benchmark"
+    benchmark: "atlas/benchmark/atlas_{sample}_bin.benchmark"
     shell:
         """
         atlas run binning --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --resources mem=60 -k
+        --resources mem=60 -k && touch {output.check}
         """

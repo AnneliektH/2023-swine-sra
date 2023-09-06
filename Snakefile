@@ -28,6 +28,8 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand("virsorter2/checks/{sample}_vs2_done.check", sample=SAMPLES)
+        expand("atlas/check/atlas_done_{sample}_bin.check", sample=SAMPLES),
+        expand("virsorter2/check/{sample}_vs2_done.check", sample=SAMPLES)
+       
 
 
