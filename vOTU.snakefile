@@ -13,7 +13,7 @@ rule virsorter2:
         """
         virsorter run all -w virsorter2/{wildcards.sample} \
         -i atlas/atlas_{wildcards.sample}/{wildcards.sample}/{wildcards.sample}_contigs.fasta \
-        --min-length 10000 -j {threads} --min-score 0.9 && touch {output.check}
+        --min-length 5000 -j {threads} --min-score 0.5 && touch {output.check}
         """
 
 # # rename found vOTUs

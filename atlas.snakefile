@@ -10,7 +10,8 @@ rule atlas_init:
         "atlas"
     shell:
         """
-        atlas init -w atlas/atlas_{wildcards.sample} --db-dir ../database_atlas/ ./reads/fasterq/{wildcards.sample}/ \
+        atlas init -w atlas/atlas_{wildcards.sample} \
+        --db-dir ../database_atlas/ ./reads/fasterq/{wildcards.sample}/ \
         --assembler megahit && touch {output.check}
         """
 
@@ -30,7 +31,7 @@ rule atlas_assembly:
     shell:
         """
         atlas run assembly --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --resources mem=60 -k && \
+        --resources mem=60 -k || true && \
         cp atlas/atlas_{wildcards.sample}/finished_assembly {output.assem}
         """
 
