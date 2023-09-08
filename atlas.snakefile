@@ -48,6 +48,6 @@ rule atlas_binning:
     benchmark: "atlas/benchmark/atlas_{sample}_bin.benchmark"
     shell:
         """
-        atlas run binning --profile cluster -w atlas/atlas_{wildcards.sample} \
+        atlas run genomes --profile cluster -w atlas/atlas_{wildcards.sample} \
         --resources mem=60 -k && touch {output.check}
         """

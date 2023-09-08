@@ -16,8 +16,19 @@ rule virsorter2:
         --min-length 5000 -j {threads} --min-score 0.5 && touch {output.check}
         """
 
-# # rename found vOTUs
-# rule bbmap_rename:
-#     input: 
-#         check = "virsorter2/check/{sample}_vs2_done.check"
-#     output: 
+# rename found vOTUs
+rule bbmap_rename_viral:
+    input: 
+        check = "virsorter2/check/{sample}_vs2_done.check"
+    output: 
+        contigs = "virsorter2/contigs/{sample}_rename.fa"
+        log:
+        "logs/virsorter2/{sample}_rename.log"
+    conda: 
+        "bbmap"
+    shell:
+        """
+        rename.sh in=virsorter2/{wildcards.sample}/final-viral-combined.fa \
+        out={output.contigs_renamed} \
+        prefix={wildcards.sample}
+        """

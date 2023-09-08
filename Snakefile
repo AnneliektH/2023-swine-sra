@@ -29,7 +29,7 @@ wildcard_constraints:
 rule all:
     input:
         expand("atlas/check/atlas_done_{sample}_bin.check", sample=SAMPLES),
-        expand("virsorter2/check/{sample}_vs2_done.check", sample=SAMPLES)
+        expand("virsorter2/contigs/{sample}_rename.fa", sample=SAMPLES)
        
 
 
