@@ -11,8 +11,25 @@ rule atlas_init:
     shell:
         """
         atlas init -w atlas/atlas_{wildcards.sample} \
-        --db-dir ../database_atlas/ ./reads/fasterq/{wildcards.sample}/ \
+        .f ./reads/fasterq/{wildcards.sample}/ \
         --assembler megahit && touch {output.check}
+        """
+# break into 3 bc the QC needs way more mem than assembly
+# https://github.com/metagenome-atlas/atlas/issues/676
+rule atlas_qc:
+    input:
+        check="atlas/check/atlas_init_{sample}.check"
+    output:
+        qc = "atlas/check/qc_{sample}.check"
+    log:
+        "logs/atlas/{sample}_qc.log"
+    conda: 
+        "atlas"
+    benchmark: "atlas/benchmark/atlas_{sample}_qc.benchmark"
+    shell:
+        """
+        atlas run qc --profile cluster -w atlas/atlas_{wildcards.sample} \
+        --default-resources mem_mb=60000 --latency-wait 30000 -k
         """
 
 # Now use atlas on the files to create MAGs
@@ -20,7 +37,7 @@ rule atlas_init:
 # https://github.com/metagenome-atlas/atlas/issues/229
 rule atlas_assembly:
     input:
-        check="atlas/check/atlas_init_{sample}.check"
+        check="atlas/check/qc_{sample}.check"
     output:
         assem = "atlas/check/assemdone_{sample}.check"
     log:

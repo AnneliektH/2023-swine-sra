@@ -22,13 +22,13 @@ rule bbmap_rename_viral:
         check = "virsorter2/check/{sample}_vs2_done.check"
     output: 
         contigs = "virsorter2/contigs/{sample}_rename.fa"
-        log:
+    log:
         "logs/virsorter2/{sample}_rename.log"
     conda: 
         "bbmap"
     shell:
         """
         rename.sh in=virsorter2/{wildcards.sample}/final-viral-combined.fa \
-        out={output.contigs_renamed} \
+        out={output.contigs} \
         prefix={wildcards.sample}
         """

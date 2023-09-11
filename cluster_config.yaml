@@ -1,4 +1,11 @@
 __default__:
 # default parameter for all rules
   account: amhorst
-  nodes: 1
+  mem: 1G
+
+
+get_read_stats:
+  queue: long
+  account: amhorst
+  time_min:  # min
+  threads:
