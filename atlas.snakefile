@@ -12,7 +12,7 @@ rule atlas_init:
         """
         atlas init -w atlas/atlas_{wildcards.sample} \
         ./reads/fasterq/{wildcards.sample}/ \
-        --assembler megahit && touch {output.check}
+        --assembler megahit && touch {output.check} --latency-wait 30000
         """
 # break into 3 bc the QC needs way more mem than assembly
 # https://github.com/metagenome-atlas/atlas/issues/676
