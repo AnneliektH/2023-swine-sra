@@ -11,6 +11,7 @@ dependencies:
   - ca-certificates
   - certifi
   - openssl
+  - pigz
   - seaborn
   - pip:
     - awscli==1.29.20

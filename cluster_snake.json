@@ -31,7 +31,7 @@
     }, 
         "fasterq_dump" :
     {
-        "time" : "00:10:00",
+        "time" : "00:30:00",
         "ntasks" : 10, 
         "job_name" : "fasterqdump",
         "output": "out/fasterq_dump_%j.out",

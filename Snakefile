@@ -28,7 +28,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand("atlas/check/atlas_done_{sample}_bin.check", sample=SAMPLES),
+        expand("atlas/check/bin_{sample}.check", sample=SAMPLES),
         expand("virsorter2/contigs/{sample}_rename.fa", sample=SAMPLES)
        
 

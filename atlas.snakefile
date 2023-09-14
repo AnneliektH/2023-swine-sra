@@ -11,7 +11,7 @@ rule atlas_init:
     shell:
         """
         atlas init -w atlas/atlas_{wildcards.sample} \
-        .f ./reads/fasterq/{wildcards.sample}/ \
+        ./reads/fasterq/{wildcards.sample}/ \
         --assembler megahit && touch {output.check}
         """
 # break into 3 bc the QC needs way more mem than assembly
@@ -29,7 +29,7 @@ rule atlas_qc:
     shell:
         """
         atlas run qc --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --default-resources mem_mb=60000 --latency-wait 30000 -k
+        --default-resources mem_mb=60000 --latency-wait 30000 -k && touch {output.qc}
         """
 
 # Now use atlas on the files to create MAGs
@@ -48,7 +48,7 @@ rule atlas_assembly:
     shell:
         """
         atlas run assembly --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --resources mem=60 -k || true && \
+        --latency-wait 30000 --default-resources mem_mb=60000 -k || true && \
         cp atlas/atlas_{wildcards.sample}/finished_assembly {output.assem}
         """
 
@@ -57,7 +57,7 @@ rule atlas_binning:
     input:
         check="atlas/check/assemdone_{sample}.check"
     output:
-        check = "atlas/check/atlas_done_{sample}_bin.check"
+        check = "atlas/check/bin_{sample}.check"
     log:
         "logs/atlas/{sample}_bin.log"
     conda: 
@@ -66,5 +66,5 @@ rule atlas_binning:
     shell:
         """
         atlas run genomes --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --resources mem=60 -k && touch {output.check}
+        --resources mem=60 --latency-wait 30000 -k && touch {output.check}
         """

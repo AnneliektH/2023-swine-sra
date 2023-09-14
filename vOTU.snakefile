@@ -29,6 +29,5 @@ rule bbmap_rename_viral:
     shell:
         """
         rename.sh in=virsorter2/{wildcards.sample}/final-viral-combined.fa \
-        out={output.contigs} \
-        prefix={wildcards.sample}
+        out={output.contigs} prefix={wildcards.sample}_viral --latency-wait 30000
         """
