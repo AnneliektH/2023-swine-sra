@@ -10,7 +10,8 @@ rule atlas_init:
         "atlas"
     shell:
         """
-        atlas init -w atlas/atlas_{wildcards.sample} \
+        atlas init --db-dir /home/amhorst/database_atlas \
+        -w atlas/atlas_{wildcards.sample} \
         ./reads/fasterq/{wildcards.sample}/ \
         --assembler megahit && touch {output.check} --latency-wait 30000
         """

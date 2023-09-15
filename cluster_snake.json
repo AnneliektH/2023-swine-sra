@@ -4,8 +4,8 @@
 {
     "__default__" :
     {
-        "account" : "amhorst",
-        "time" : "03:00:00",
+        "account" : "ctbrowngrp",
+        "time" : "01:00:00",
         "job_name" : "snakemake",
         "nodes" : 1,
         "ntasks": 1,
@@ -39,7 +39,7 @@
     }, 
         "bbmap_rename_viral" :
     {
-        "time" : "00:05:00",
+        "time" : "00:02:00",
         "ntasks" : 1, 
         "job_name" : "bbmap_rename",
         "output": "out/rename_%j.out",
