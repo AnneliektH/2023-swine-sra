@@ -8,7 +8,7 @@ rule virsorter2:
         "logs/virsorter2/{sample}.log"
     conda: 
         "virsorter2"
-    threads: 6
+    threads: 24
     shell:
         """
         virsorter run all -w virsorter2/{wildcards.sample} \
