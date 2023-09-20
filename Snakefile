@@ -7,6 +7,7 @@ include: "sra_download.snakefile"
 include: "fasterq_dump.snakefile"
 include: "atlas.snakefile"
 include: "vOTU.snakefile"
+include: "mv_mags.snakefile"
 
 # set configfile with samplenames
 configfile: "config.yaml"
@@ -28,7 +29,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand("atlas/check/bin_{sample}.check", sample=SAMPLES),
+        expand("atlas/check/move_{sample}.check", sample=SAMPLES),
         expand("virsorter2/contigs/{sample}_rename.fa", sample=SAMPLES)
        
 

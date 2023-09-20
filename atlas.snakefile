@@ -58,7 +58,7 @@ rule atlas_binning:
     input:
         check="atlas/check/assemdone_{sample}.check"
     output:
-         touch("atlas/check/bin_{sample}.check")
+        check = "atlas/check/bin_{sample}.check"
     log:
         "logs/atlas/{sample}_bin.log"
     conda: 
@@ -67,5 +67,5 @@ rule atlas_binning:
     shell:
         """
         atlas run genomes --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --resources mem=60 --latency-wait 30000 -k || true
+        --default-resources mem_mb=30000 --latency-wait 30000 -k || true && touch {output.check}
         """

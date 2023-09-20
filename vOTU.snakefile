@@ -13,7 +13,7 @@ rule virsorter2:
         """
         virsorter run all -w virsorter2/{wildcards.sample} \
         -i atlas/atlas_{wildcards.sample}/{wildcards.sample}/{wildcards.sample}_contigs.fasta \
-        --min-length 5000 -j {threads} --min-score 0.5 && touch {output.check}
+        --min-length 5000 -j {threads} --min-score 0.5 || true && touch {output.check}
         """
 
 # rename found vOTUs
@@ -28,6 +28,13 @@ rule bbmap_rename_viral:
         "bbmap"
     shell:
         """
+    if [[ ! -e virsorter2/{wildcards.sample}/final-viral-combined.fa ]] 
+    then
+        touch {output.contigs} 
+    else
         rename.sh in=virsorter2/{wildcards.sample}/final-viral-combined.fa \
         out={output.contigs} prefix={wildcards.sample}_viral 
+    fi
         """
+
+
