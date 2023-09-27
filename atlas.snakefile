@@ -49,7 +49,7 @@ rule atlas_assembly:
     shell:
         """
         atlas run assembly --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --latency-wait 30000 --default-resources mem_mb=60000 -k || true && \
+        --latency-wait 30000 --default-resources mem_mb=60000 -k && \
         cp atlas/atlas_{wildcards.sample}/finished_assembly {output.assem}
         """
 
@@ -67,5 +67,5 @@ rule atlas_binning:
     shell:
         """
         atlas run genomes --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --default-resources mem_mb=30000 --latency-wait 30000 -k || true && touch {output.check}
+        --default-resources mem_mb=30000 --latency-wait 30000 -k && touch {output.check}
         """

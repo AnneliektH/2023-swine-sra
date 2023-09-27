@@ -13,3 +13,4 @@ rule download_sra:
             aws s3 cp --quiet --no-sign-request s3://sra-pub-run-odp/sra/{wildcards.sample}/{wildcards.sample} {output.sra}
         fi
         """
+        

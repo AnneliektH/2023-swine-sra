@@ -41,6 +41,7 @@
     {
         "time" : "00:02:00",
         "ntasks" : 1, 
+        "partition" : "bml",
         "job_name" : "bbmap_rename",
         "output": "out/rename_%j.out",
         "error": "err/rename_%j.err"
@@ -55,7 +56,7 @@
     },
     "atlas_qc" :
     {
-        "time" : "02:00:00",
+        "time" : "05:00:00",
         "ntasks" : 1, 
         "job_name" : "atlas_qc",
         "output": "out/atlas_qc_%j.out",
@@ -76,6 +77,15 @@
         "job_name" : "atlas_binning",
         "output": "out/atlas_binning_%j.out",
         "error": "err/atlas_binning_%j.err"
+    },
+    "atlas_move_MAGs" :
+    {
+        "time" : "00:02:00",
+        "partition" : "bml",
+        "ntasks" : 1, 
+        "job_name" : "move_MAGs",
+        "output": "out/mvmags_%j.out",
+        "error": "err/mvmags_%j.err"
     }
 }
 
