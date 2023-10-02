@@ -3,11 +3,12 @@ import os
 import pandas as pd
 
 # include snakefiles
-include: "sra_download.snakefile"
-include: "fasterq_dump.snakefile"
-include: "atlas.snakefile"
-include: "vOTU.snakefile"
-include: "mv_mags.snakefile"
+include: "sra_download.smk"
+include: "fasterq_dump.smk"
+include: "atlas.smk"
+include: "vOTU.smk"
+include: "mv_mags.smk"
+include: "sourmash_gather.smk"
 
 # set configfile with samplenames
 configfile: "config.yaml"
@@ -47,7 +48,12 @@ virsorter_out = [
         )
     for project, sample_list in project_run.items() for run in sample_list]
 
+sourmash_out = [
+    expand(
+        f"sourmash/{run}.csv"
+        )
+    for project, sample_list in project_run.items() for run in sample_list] 
+
 rule all:
     input:
-        atlas_out,
-        virsorter_out
+        sourmash_out
