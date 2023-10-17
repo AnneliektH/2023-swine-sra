@@ -30,7 +30,9 @@ rule atlas_qc:
     shell:
         """
         atlas run qc --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --default-resources mem_mb=60000 --latency-wait 30000 -k && touch {output.qc}
+        --default-resources mem_mb=60000 --latency-wait 30000 -k && \
+        touch {output.qc} && \
+        rm -r ./reads/fasterq/{wildcards.sample}/
         """
 
 # Now use atlas on the files to create MAGs

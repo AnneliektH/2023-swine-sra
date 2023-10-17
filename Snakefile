@@ -17,43 +17,36 @@ configfile: "config.yaml"
 atlas_dir = 'atlas'
 
 # Load the metadata file
-metadata = pd.read_csv(config['metadata_file_path'], usecols=['Run', 'perc_sourm'])
+metadata = pd.read_csv(config['metadata_file_path'], usecols=['Run'])
 
-# create dict 
-DICT = metadata.to_dict(orient='index')
-project_run ={each['perc_sourm']: {each['Run']} for each in DICT.values()}
 
-print(project_run)
+# Create a list of run ids
+samples = metadata['Run'].tolist()
 
-wildcard_constraints:
-    sample='\w+',
-
-for each in DICT.values():
-    project = each['perc_sourm']
-    run = each['Run']
-    project_run[project] |= {run}
+# Define samples
+SAMPLES = config.get('samples', samples)
 
 wildcard_constraints:
     sample='\w+',
-
-atlas_out = [
-    expand(
-        f"atlas/check/{project}/move_{run}.check"
-        )
-    for project, sample_list in project_run.items() for run in sample_list]
-
-virsorter_out = [
-    expand(
-        f"virsorter2/contigs/{project}/{run}_rename.fa"
-        )
-    for project, sample_list in project_run.items() for run in sample_list]
-
-sourmash_out = [
-    expand(
-        f"sourmash/{run}.csv"
-        )
-    for project, sample_list in project_run.items() for run in sample_list] 
 
 rule all:
     input:
-        sourmash_out
+        expand("atlas/check/move_{sample}.check", sample=SAMPLES,), 
+        expand("virsorter2/contigs/{sample}_rename.fa", sample=SAMPLES)
+
+
+# virsorter_out = [
+#     expand(
+#         f"virsorter2/contigs/{project}/{run}_rename.fa"
+#         )
+#     for project, sample_list in project_run.items() for run in sample_list]
+
+# sourmash_out = [
+#     expand(
+#         f"sourmash/{run}.csv"
+#         )
+#     for project, sample_list in project_run.items() for run in sample_list] 
+
+# rule all:
+#     input:
+#         sourmash_out

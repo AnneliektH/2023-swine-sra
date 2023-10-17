@@ -1,7 +1,7 @@
 # Download SRA files
 rule download_sra:
     output:
-        sra = "sra/{sample}"
+        sra = temporary("sra/{sample}")
     log:
         "logs/prefetch/{sample}.log"
     conda:

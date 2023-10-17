@@ -21,9 +21,9 @@ rule bbmap_rename_viral:
     input: 
         check = "virsorter2/check/{sample}_vs2_done.check"
     output: 
-        contigs = "virsorter2/contigs/{exp}/{sample}_rename.fa"
+        contigs = "virsorter2/contigs/{sample}_rename.fa"
     log:
-        "logs/virsorter2/{exp}/{sample}_rename.log"
+        "logs/virsorter2/{sample}_rename.log"
     conda: 
         "bbmap"
     shell:

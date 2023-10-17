@@ -10,7 +10,7 @@ rule sourmash_gather:
         "sourmash"
     shell:
         """
-        sourmash gather {input.sig} sourmash_test/all-MAGs_21.zip \
-        /group/ctbrowngrp/sourmash-db/gtdb-rs214/gtdb-rs214-k21.zip -k 21 
-        -o {output.csv}
+        sourmash gather {input.sig} atlas/MAGs/all-MAGs_21.zip \
+        /group/ctbrowngrp/sourmash-db/gtdb-rs214/gtdb-rs214-k21.zip -k 21 \
+        --scaled 10000 -o {output.csv}
         """

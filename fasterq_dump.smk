@@ -16,6 +16,5 @@ rule fasterq_dump:
         -O ./reads/fasterq/{wildcards.sample} --skip-technical \
         --bufsize 1000MB --curcache 10000MB && \
         pigz -f -p 10 ./reads/fasterq/{wildcards.sample}/*.fastq && \
-        rm {input.sra_file} && \
         touch {output.check}
         """

@@ -23,7 +23,7 @@
     }, 
     "download_sra" :
     {
-        "time" : "00:20:00",
+        "time" : "00:50:00",
         "ntasks" : 1, 
         "job_name" : "download_sra",
         "output": "out/download_sra_%j.out",
@@ -89,12 +89,13 @@
     }, 
     "sourmash_gather" :
     {
-        "time" : "06:00:00",
+        "time" : "04:00:00",
         "partition" : "bmm",
         "ntasks" : 1, 
         "job_name" : "gather",
         "output": "out/gather_%j.out",
-        "error": "err/gather_%j.err"
+        "error": "err/gather_%j.err", 
+        "mem_mb": 50000
     }
 }
 
