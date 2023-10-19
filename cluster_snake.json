@@ -56,7 +56,7 @@
     },
     "atlas_qc" :
     {
-        "time" : "05:00:00",
+        "time" : "08:00:00",
         "ntasks" : 1, 
         "job_name" : "atlas_qc",
         "output": "out/atlas_qc_%j.out",
@@ -64,7 +64,7 @@
     },
     "atlas_assembly" :
     {
-        "time" : "05:00:00",
+        "time" : "6:00:00",
         "ntasks" : 1, 
         "job_name" : "atlas_assembly",
         "output": "out/atlas_assembly_%j.out",
@@ -72,7 +72,7 @@
     },
     "atlas_binning" :
     {
-        "time" : "07:00:00",
+        "time" : "10:00:00",
         "ntasks" : 1, 
         "job_name" : "atlas_binning",
         "output": "out/atlas_binning_%j.out",
