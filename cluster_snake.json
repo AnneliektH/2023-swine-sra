@@ -23,7 +23,7 @@
     }, 
     "download_sra" :
     {
-        "time" : "00:50:00",
+        "time" : "02:00:00",
         "ntasks" : 1, 
         "job_name" : "download_sra",
         "output": "out/download_sra_%j.out",
@@ -31,7 +31,7 @@
     }, 
         "fasterq_dump" :
     {
-        "time" : "00:30:00",
+        "time" : "03:00:00",
         "ntasks" : 10, 
         "job_name" : "fasterqdump",
         "output": "out/fasterq_dump_%j.out",
