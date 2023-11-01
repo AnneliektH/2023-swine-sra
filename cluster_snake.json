@@ -15,7 +15,7 @@
     },
     "virsorter2" :
     {
-        "time" : "3:00:00",
+        "time" : "6:00:00",
         "ntasks" : 24, 
         "job_name" : "VS2",
         "output": "out/vs2_snake_%j.out",
@@ -23,7 +23,7 @@
     }, 
     "download_sra" :
     {
-        "time" : "02:00:00",
+        "time" : "03:00:00",
         "ntasks" : 1, 
         "job_name" : "download_sra",
         "output": "out/download_sra_%j.out",

@@ -33,7 +33,7 @@ rule bbmap_rename_viral:
         touch {output.contigs} 
     else
         rename.sh in=virsorter2/{wildcards.sample}/final-viral-combined.fa \
-        out={output.contigs} prefix={wildcards.sample}_viral 
+        out={output.contigs} prefix=AtH2023_{wildcards.sample}_viral 
     fi
         """
 
