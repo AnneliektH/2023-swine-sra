@@ -68,6 +68,6 @@ rule atlas_binning:
     benchmark: "atlas/benchmark/atlas_{sample}_bin.benchmark"
     shell:
         """
-        atlas run genomes --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --default-resources mem_mb=30000 --latency-wait 30000 -k && touch {output.check}
+        atlas run genomes --configfile atlas_config.yaml --profile cluster -w atlas/atlas_{wildcards.sample} \
+        --default-resources mem_mb=60000 --latency-wait 30000 -k && touch {output.check}
         """
