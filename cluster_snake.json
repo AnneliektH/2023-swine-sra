@@ -23,7 +23,7 @@
     }, 
     "download_sra" :
     {
-        "time" : "03:00:00",
+        "time" : "03:30:00",
         "ntasks" : 1, 
         "job_name" : "download_sra",
         "output": "out/download_sra_%j.out",
