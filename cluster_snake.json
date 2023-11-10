@@ -87,15 +87,56 @@
         "output": "out/mvmags_%j.out",
         "error": "err/mvmags_%j.err"
     }, 
-    "sourmash_gather" :
+    "sourmash_gather_MAG" :
     {
-        "time" : "04:00:00",
+        "time" : "03:00:00",
         "partition" : "bmm",
         "ntasks" : 1, 
-        "job_name" : "gather",
+        "job_name" : "mag_gather",
+        "output": "out/gatherm_%j.out",
+        "error": "err/gatherm_%j.err", 
+        "mem": 20000
+    },
+    "sourmash_gather_reps" :
+    {
+        "time" : "00:15:00",
+        "partition" : "bmm",
+        "ntasks" : 1, 
+        "job_name" : "og_gather",
         "output": "out/gather_%j.out",
         "error": "err/gather_%j.err", 
-        "mem_mb": 50000
-    }
+        "mem": 12000
+    },
+    "fastgather" :
+    {
+        "time" : "01:00:00",
+        "partition" : "bmm",
+        "ntasks" : 32, 
+        "job_name" : "fastgather",
+        "output": "out/fastgather_%j.out",
+        "error": "err/fastgather_%j.err", 
+        "mem": 2000
+    },
+    "fastgather_reps" :
+    {
+        "time" : "01:00:00",
+        "partition" : "bmm",
+        "ntasks" : 32, 
+        "job_name" : "fastgather",
+        "output": "out/fastgather_%j.out",
+        "error": "err/fastgather_%j.err", 
+        "mem": 2000
+    },
+    "fastgather_MAG" :
+    {
+        "time" : "01:30:00",
+        "partition" : "bmm",
+        "ntasks" : 32, 
+        "job_name" : "fastgather_MAG",
+        "output": "out/fastgather_mag_%j.out",
+        "error": "err/fastgather_mag_%j.err", 
+        "mem": 2000
+    }    
+    
 }
 

@@ -195,7 +195,6 @@ rename_mags_contigs: true        #Rename contigs of representative MAGs
 #######################
 
 annotations:
-- genes
 
 
 ########################
