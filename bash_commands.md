@@ -51,6 +51,7 @@ done | parallel -j 32
 
 # Concatenate all signatures
 sourmash sig cat *.sig -o ../all-MAGs_21.zip
+sourmash sig collect *.sig -o ../all-MAGs_21.sqlmf
 
 # Probably easier to make a list of the db to use
 python /home/ctbrown/scratch/2022-database-covers/make-db-cover.py \

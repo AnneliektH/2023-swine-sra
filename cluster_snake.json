@@ -89,23 +89,23 @@
     }, 
     "sourmash_gather_MAG" :
     {
-        "time" : "03:00:00",
+        "time" : "04:00:00",
         "partition" : "bmm",
         "ntasks" : 1, 
         "job_name" : "mag_gather",
         "output": "out/gatherm_%j.out",
         "error": "err/gatherm_%j.err", 
-        "mem": 20000
+        "mem": 40000
     },
     "sourmash_gather_reps" :
     {
-        "time" : "00:15:00",
+        "time" : "00:30:00",
         "partition" : "bmm",
         "ntasks" : 1, 
         "job_name" : "og_gather",
         "output": "out/gather_%j.out",
         "error": "err/gather_%j.err", 
-        "mem": 12000
+        "mem": 20000
     },
     "fastgather" :
     {
