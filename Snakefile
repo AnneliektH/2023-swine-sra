@@ -31,11 +31,11 @@ wildcard_constraints:
 
 rule all:
     input:
-       # expand("atlas/check/move_{sample}.check", sample=SAMPLES,), 
-       # expand("virsorter2/contigs/{sample}_rename.fa", sample=SAMPLES),
-        expand("sourmash/only_gtdbk-reps-sub/{sample}.csv", sample=SAMPLES),
-       # expand("sourmash/fastgather-reps-sub/{sample}.csv", sample=SAMPLES)
-        expand("sourmash/MAGs_gtdbk-reps-sub/{sample}.csv", sample=SAMPLES)
+        expand("atlas/check/move_{sample}.check", sample=SAMPLES,), 
+        expand("virsorter2/contigs/{sample}_rename.fa", sample=SAMPLES)
+       # expand("sourmash/fastgather-vir/{sample}.csv", sample=SAMPLES),
+       # expand("sourmash/vir/{sample}.csv", sample=SAMPLES)
+       # expand("sourmash/MAGs_gtdbk-reps-sub/{sample}.csv", sample=SAMPLES)
 
 
 # virsorter_out = [

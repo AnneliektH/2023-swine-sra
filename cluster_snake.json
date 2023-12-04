@@ -31,7 +31,7 @@
     }, 
         "fasterq_dump" :
     {
-        "time" : "03:00:00",
+        "time" : "04:00:00",
         "ntasks" : 10, 
         "job_name" : "fasterqdump",
         "output": "out/fasterq_dump_%j.out",
@@ -97,15 +97,15 @@
         "error": "err/gatherm_%j.err", 
         "mem": 40000
     },
-    "sourmash_gather_reps" :
+    "sourmash_vir" :
     {
         "time" : "00:30:00",
         "partition" : "bmm",
         "ntasks" : 1, 
-        "job_name" : "og_gather",
-        "output": "out/gather_%j.out",
-        "error": "err/gather_%j.err", 
-        "mem": 20000
+        "job_name" : "vir_gather",
+        "output": "out/gatherv_%j.out",
+        "error": "err/gatherv_%j.err", 
+        "mem": 10000
     },
     "fastgather" :
     {
@@ -117,15 +117,15 @@
         "error": "err/fastgather_%j.err", 
         "mem": 2000
     },
-    "fastgather_reps" :
+    "fastgather_votu" :
     {
-        "time" : "01:00:00",
+        "time" : "03:00:00",
         "partition" : "bmm",
         "ntasks" : 32, 
         "job_name" : "fastgather",
         "output": "out/fastgather_%j.out",
         "error": "err/fastgather_%j.err", 
-        "mem": 2000
+        "mem": 5000
     },
     "fastgather_MAG" :
     {

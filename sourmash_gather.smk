@@ -1,48 +1,67 @@
 # fastgather
-rule fastgather:
+rule fastgather_votu:
     input: 
-        sig = "/group/ctbrowngrp/irber/data/wort-data/wort-sra/sigs/{sample}.sig"
+        sig = "/home/ctbrown/scratch2/2023-swine-usda/outputs.swine-x-reps/{sample}.subtract.sig.gz"
     output: 
-        csv = "sourmash/fastgather/{sample}.csv"
+        csv = "sourmash/fastgather-vir/{sample}.csv"
     resources:
         # limit to one fastgather with --resources rayon_exclude=1
         rayon_exclude=1,
-        mem_mb=7000
+        mem_mb=5000
     log:
-        "logs/sourmash/{sample}_fg.log"
+        "logs/sourmash/{sample}_vir.log"
     conda: 
         "branchwater"
     shell:
         """
         sourmash scripts fastgather {input.sig} \
-        /group/ctbrowngrp/sourmash-db/gtdb-rs214/gtdb-rs214-k21.zip -k 21 \
+        virsorter2/all-votu_21.zip -k 21 \
         --scaled 10000 -o {output.csv} -c 32
         """
 
-# fastgather MAGS : MAKING A PICKLIST WORKS BUT YOU NEED A MANIFEST FOR THE INPUT DB
-rule fastgather_MAG:
+rule sourmash_vir:
     input: 
-        sig = "/group/ctbrowngrp/irber/data/wort-data/wort-sra/sigs/{sample}.sig"
+        sig = "/home/ctbrown/scratch2/2023-swine-usda/outputs.swine-x-reps/{sample}.subtract.sig.gz",
+        picklist = "sourmash/fastgather-vir/{sample}.csv"
     output: 
-        csv = "sourmash/fastgather_MAG/{sample}.csv"
-    resources:
-        # limit to one fastgather with --resources rayon_exclude=1
-        rayon_exclude=1,
-        mem_mb=7000
+        csv = "sourmash/vir/{sample}.csv"
     log:
-        "logs/sourmash/{sample}_fg_mag.log"
+        "logs/sourmash/{sample}_vir.log"
+    resources:
+        mem_mb=10000
     conda: 
-        "branchwater"
+        "sourmash"
     shell:
         """
-        sourmash scripts fastgather {input.sig} \
-        sourmash/db-cover/list.mags-gtdb-r214.k21.cover.txt -k 21 \
-        --scaled 10000 -o {output.csv} -c 32
+        sourmash gather {input.sig} \
+        virsorter2/all-votu_21.zip -k 21 \
+        --scaled 10000 -o {output.csv} --picklist {input.picklist}:match_name:ident
         """
+
+# fastgather MAGS : MAKING A PICKLIST WORKS BUT YOU NEED A MANIFEST FOR THE INPUT DB
+# rule fastgather_MAG:
+#     input: 
+#         sig = "/home/ctbrown/scratch2/2023-swine-usda/outputs.swine-x-reps/{sample}.subtract.sig.gz"
+#     output: 
+#         csv = "sourmash/fastgather_MAG/{sample}.csv"
+#     resources:
+#         # limit to one fastgather with --resources rayon_exclude=1
+#         rayon_exclude=1,
+#         mem_mb=7000
+#     log:
+#         "logs/sourmash/{sample}_fg_mag.log"
+#     conda: 
+#         "branchwater"
+#     shell:
+#         """
+#         sourmash scripts fastgather {input.sig} \
+#         sourmash/db-cover/list.mags-gtdb-r214.k21.cover.txt -k 31 \
+#         --scaled 10000 -o {output.csv} -c 32
+#         """
 # # Sourmash with only gtdbk
 # rule sourmash_gather_orig:
 #     input: 
-#         sig = "/group/ctbrowngrp/irber/data/wort-data/wort-sra/sigs/{sample}.sig",
+#         sig = "/home/ctbrown/scratch2/2023-swine-usda/outputs.swine-x-reps/{sample}.subtract.sig.gz",
 #         picklist = "sourmash/fastgather/{sample}.csv"
 #     output: 
 #         csv = "sourmash/only_gtdbk/{sample}.csv"
@@ -62,7 +81,7 @@ rule fastgather_MAG:
 # # # smash with gtdbk and mags
 # # rule sourmash_gather_MAG:
 # #     input: 
-# #         sig = "/group/ctbrowngrp/irber/data/wort-data/wort-sra/sigs/{sample}.sig"
+# #         sig = "/home/ctbrown/scratch2/2023-swine-usda/outputs.swine-x-reps/{sample}.subtract.sig.gz"
 # #         #picklist = "sourmash/fastgather_MAG/{sample}.csv"
 # #     output: 
 # #         csv = "sourmash/MAGs_gtdbk/{sample}.csv"
@@ -81,7 +100,7 @@ rule fastgather_MAG:
 # # fastgather
 # rule fastgather_reps:
 #     input: 
-#         sig = "/group/ctbrowngrp/irber/data/wort-data/wort-sra/sigs/{sample}.sig"
+#         sig = "/home/ctbrown/scratch2/2023-swine-usda/outputs.swine-x-reps/{sample}.subtract.sig.gz"
 #     output: 
 #         csv = "sourmash/fastgather-reps-sub/{sample}.csv"
 #     resources:

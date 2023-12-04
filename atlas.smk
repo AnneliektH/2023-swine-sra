@@ -69,5 +69,5 @@ rule atlas_binning:
     shell:
         """
         atlas run genomes --configfile atlas_config.yaml --profile cluster -w atlas/atlas_{wildcards.sample} \
-        --default-resources mem_mb=60000 --latency-wait 30000 -k && touch {output.check}
+        --default-resources mem_mb=80000 --latency-wait 30000 -k && touch {output.check}
         """
