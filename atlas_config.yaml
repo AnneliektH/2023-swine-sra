@@ -29,7 +29,7 @@ simplejob_threads: 4
 
 #Runtime only for cluster execution
 runtime: #in h
-  default: 5
+  default: 4
   assembly: 48
   long: 24
   simplejob: 1
