@@ -52,7 +52,7 @@ rule atlas_assembly:
     benchmark: "atlas/benchmark/atlas_{sample}_assem.benchmark"
     shell:
         """
-        atlas run assembly --profile cluster -w atlas/atlas_{wildcards.sample} \
+        atlas run assembly --configfile atlas_config.yaml --profile cluster -w atlas/atlas_{wildcards.sample} \
         --latency-wait 30000 --default-resources mem_mb=60000 -k && \
         cp atlas/atlas_{wildcards.sample}/finished_assembly {output.assem}
         """

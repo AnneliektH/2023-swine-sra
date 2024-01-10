@@ -22,7 +22,7 @@ mem: 60
 # threads and memory for jobs needing high amount of memory. e.g GTDB-tk,checkm or assembly
 large_mem: 250
 large_threads: 16
-assembly_threads: 8
+assembly_threads: 16
 assembly_memory: 250
 simplejob_mem: 10
 simplejob_threads: 4
@@ -30,7 +30,7 @@ simplejob_threads: 4
 #Runtime only for cluster execution
 runtime: #in h
   default: 4
-  assembly: 48
+  assembly: 10
   long: 24
   simplejob: 1
 
@@ -76,7 +76,7 @@ contaminant_ambiguous: best
 ########################
 
 # Advanced Error correction
-error_correction_before_assembly: true
+error_correction_before_assembly: false
 spades_skip_BayesHammer: true # Skip error correction in spades assembler
 error_correction_kmer: 31 # can be longer e.g. 62 but takes more memory
 
@@ -88,7 +88,7 @@ error_correction_aggressive: false
 
 # Merging of pairs
 # join R1 and R2 at overlap; unjoined reads are still utilized
-merge_pairs_before_assembly: true
+merge_pairs_before_assembly: false
 merging_k: 62
 
 

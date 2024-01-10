@@ -35,7 +35,7 @@ rule fastgather_vir:
     shell:
         """
         sourmash scripts fastgather {input.sig} \
-        /virsorter2/all-votu_21.zip -k 21 \
+        /votu_smash/all-votu_21.zip -k 21 \
         --scaled 10000 -o {output.csv} -c 32
         """
 
