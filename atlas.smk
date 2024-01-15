@@ -31,7 +31,7 @@ rule atlas_qc:
         """
         atlas run qc --profile cluster -w atlas/atlas_{wildcards.sample} \
         --configfile atlas_config.yaml \
-        --default-resources mem_mb=60000 \
+        --default-resources mem_mb=70000 \
         --latency-wait 30000 -k && \
         touch {output.qc} && \
         rm -r ./reads/fasterq/{wildcards.sample}/

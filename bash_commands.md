@@ -24,13 +24,22 @@ snakemake --use-conda --cluster-config cluster_snake.json -p --rerun-triggers mt
 srun -p bmm -J smashdb -t 4:00:00 -c 8 --mem=50gb --pty bash
 srun -p bmm -J bin -t 4:00:00 -c 12 --mem=50gb --pty bash
 
-srun -p med2 -J smash -t 3:00:00 -c 32 --mem=30gb --pty bash
+srun -p med2 -J smash -t 3:00:00 -c 1 --mem=30gb --pty bash
 
 srun -p bmm -J viralbowtie -t 12:00:00 -c 12 --mem=30gb --pty bash
 
 
+# to run the smash pipeline
+srun -p med2 -J smash -t 24:00:00 -c 48 --mem=28gb --pty bash
+snakemake --use-conda --resources mem_mb=28000 --rerun-triggers mtime -c 54 --rerun-incomplete -k
+
 mamba activate snakemake
-snakemake --use-conda --resources mem_mb=50000 --rerun-triggers mtime -c 24 
+snakemake --use-conda --resources mem_mb=50000 --rerun-triggers mtime -c 24 --rerun-incomplete -k
+
+
+srun -p med2 -J smash -t 24:00:00 -c 1 --mem=20gb --pty bash
+
+snakemake --use-conda -s Snakefile_gather --resources mem_mb=20000 --rerun-triggers mtime -c --rerun-incomplete -k
 
 mamba activate sourmash 
 cd atlas/MAGs/genomes/
