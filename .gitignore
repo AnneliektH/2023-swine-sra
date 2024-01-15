@@ -11,8 +11,14 @@ err/
 out/
 databases/
 fasterq.tmp*/
-sourmash/
+sourmash/fastgather/
+sourmash/gather_out/
+sourmash/*.csv
 README.md
 sourmash_old/
 votu_smash/
-bowtie2/
+bowtie2/check/
+bowtie2/filter_bam/
+bowtie2/mapping/
+bowtie2/*.bt2
+bowtie2/*.csv
