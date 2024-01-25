@@ -21,23 +21,19 @@ snakemake --use-conda --cluster-config cluster_snake.json -p --rerun-triggers mt
 # also run gather for all these with just gtdbk
 # create a sourmash zip and rerun
 # srun for smash
-srun -p bmm -J smashdb -t 4:00:00 -c 8 --mem=50gb --pty bash
-srun -p bmm -J bin -t 4:00:00 -c 12 --mem=50gb --pty bash
-
-srun -p med2 -J smash -t 3:00:00 -c 1 --mem=30gb --pty bash
-
-srun -p bmm -J viralbowtie -t 12:00:00 -c 12 --mem=30gb --pty bash
+srun --account=ctbrowngrp -p bmm -J smashamr -t 1:00:00 -c 6 --mem=25gb --pty bash
+srun --account=ctbrowngrp -p bmm -J bin -t 4:00:00 -c 12 --mem=50gb --pty bash
+srun --account=ctbrowngrp -p med2 -J smash -t 3:00:00 -c 1 --mem=30gb --pty bash
+srun --account=ctbrowngrp -p bmm -J viralbowtie -t 12:00:00 -c 12 --mem=30gb --pty bash
 
 
 # to run the smash pipeline
-srun -p med2 -J smash -t 24:00:00 -c 48 --mem=28gb --pty bash
-snakemake --use-conda --resources mem_mb=28000 --rerun-triggers mtime -c 54 --rerun-incomplete -k
+srun --account=ctbrowngrp -p med2 -J smash -t 24:00:00 -c 100 --mem=75gb --pty bash
+snakemake --use-conda --resources mem_mb=75000 --rerun-triggers mtime -c 100 --rerun-incomplete -k --latency-wait 30
 
 mamba activate snakemake
-snakemake --use-conda --resources mem_mb=50000 --rerun-triggers mtime -c 24 --rerun-incomplete -k
+snakemake --use-conda --resources mem_mb=75000 --rerun-triggers mtime -c 100 --rerun-incomplete -k 
 
-
-srun -p med2 -J smash -t 24:00:00 -c 1 --mem=20gb --pty bash
 
 snakemake --use-conda -s Snakefile_gather --resources mem_mb=20000 --rerun-triggers mtime -c --rerun-incomplete -k
 
@@ -58,18 +54,17 @@ mamba activate branchwater
 
 for f in *.fasta
 do
-echo sourmash sketch dna -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 $f --name ${f%.fasta*} -o ../sigs/${f%.fasta*}.sig
+echo sourmash sketch dna -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 $f --name ${f%.fasta*} -o ../sigs/${f%.fasta*}.sig.gz
 done | parallel -j 32
 
 # Concatenate all signatures
-sourmash sig cat *.sig -o ../../../all-MAGs_21.zip && \
-sourmash sig collect *.sig -o ../../../all-MAGs_21.sqlmf
+sourmash sig cat *.sig.gz -o ../../../all-MAGs_21.zip && \
+sourmash sig collect *.sig.gz -o ../../../all-MAGs_21.sqlmf
 
 # for viral sigs make individual fasta files too
 # Do with the deduplicated vOTUs 
 cd votu_smash
 awk '/^>/ {OUT=substr($0,2) ".fa"}; OUT {print >OUT}' ../../virsorter2/240108_all_viralcontigs.sorted.cluster.fa
-
 
 cd virsorter2/contigs
 cat *.fa > all_virus.fa
@@ -81,12 +76,12 @@ mamba activate branchwater
 
 for f in *.fa
 do
-echo sourmash sketch dna -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 $f --name ${f%.fa*} -o ../sigs/${f%.fa*}.sig
+echo sourmash sketch dna -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 $f --name ${f%.fa*} -o ../sigs/${f%.fa*}.sig.gz
 done | parallel -j 32
 
 # Concatenate all signatures
-sourmash sig cat sigs/*.sig -o ../all-votu_21.zip && \
-sourmash sig collect sigs/*.sig -o ../all-votu_21.sqlmf
+sourmash sig cat sigs/*.sig.gz -o ../all-votu_21.zip && \
+sourmash sig collect sigs/*.sig.gz -o ../all-votu_21.sqlmf
 
 # check number of contigs
 # viral

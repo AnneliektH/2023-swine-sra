@@ -1,0 +1,36 @@
+FASTGATHER, = glob_wildcards('../atlas/MAGs/sigs_k213151/{ident}.prot.sig.gz')
+
+PROT_DATABASE = 'protein/all_prot_CARD.sig.gz'
+NUCL_DATABASE = 'nucl/all_nucl_CARD.sig.gz'
+KSIZE = [21,31,51]
+
+rule all:
+    input:
+        expand('test_MAGs/{ident}.{KSIZE}.gather.csv', ident=FASTGATHER, KSIZE=KSIZE)
+        expand('test_MAGs/{ident}.{KSIZE}.gather.prot.csv', ident=FASTGATHER, KSIZE=KSIZE)
+
+rule gather_n:
+    input:
+       sig='../atlas/MAGs/sigs_k213151/{ident}.sig.gz',
+       db=NUCL_DATABASE,
+    output:
+        csv=touch('test_MAGs/{ident}.{KSIZE}.gather.csv'),
+        #txt='test_MAGs/{ident}.{KSIZE}.gather.txt'
+    shell: """
+        sourmash gather -k {KSIZE} {input.sig} {input.db} \
+         -o {output.csv} \
+        --threshold-bp=0 --scaled 100 
+    """
+
+rule gather_p:
+    input:
+       sig='../atlas/MAGs/sigs_k213151/{ident}.prot.sig.gz',
+       db=PROT_DATABASE,
+    output:
+        csv=touch('test_MAGs/{ident}.{KSIZE}.gather.prot.csv'),
+        #txt='test_MAGs/{ident}.{KSIZE}.gather.prot.txt'
+    shell: """
+        sourmash gather -k {KSIZE} {input.sig} {input.db} \
+         -o {output.csv} \
+        --threshold-bp=0 --scaled 100 
+    """

@@ -23,6 +23,6 @@ wildcard_constraints:
 rule all:
     input:
         expand("fastgather/concat/{sample}.csv", sample=SAMPLES)
-        # expand("gather_out/MAGs_gtdbk/{sample}.csv", sample=SAMPLES),
+#        expand("gather_out/MAGs_gtdbk/{sample}.csv", sample=SAMPLES),
         # expand("gather_out/gtdb/{sample}.csv", sample=SAMPLES),
         # expand("gather_out/MAGs_gtdbk_vir/{sample}.csv", sample=SAMPLES)

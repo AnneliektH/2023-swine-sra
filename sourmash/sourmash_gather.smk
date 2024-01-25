@@ -11,14 +11,14 @@ rule fastgather_MAG:
     resources:
         # limit to one fastgather with --resources rayon_exclude=1
         rayon_exclude=1,
-        mem_mb=25000
+        mem_mb=15000
     conda: 
         "branchwater"
     shell:
         """
         sourmash scripts fastgather {input.sig} \
         ../atlas/MAGs/all-MAGs_21.zip -k 21 \
-        --scaled 10000 -o {output.csv} -c 8
+        --scaled 10000 -o {output.csv} -c 10
         """
 
 rule fastgather_vir:
@@ -29,14 +29,14 @@ rule fastgather_vir:
     resources:
         # limit to one fastgather with --resources rayon_exclude=1
         rayon_exclude=1,
-        mem_mb=25000
+        mem_mb=15000
     conda: 
         "branchwater"
     shell:
         """
         sourmash scripts fastgather {input.sig} \
         ../votu_smash/all-votu_21.zip -k 21 \
-        --scaled 10000 -o {output.csv} -c 8
+        --scaled 10000 -o {output.csv} -c 10
         """
 # Titus picklists are in /home/ctbrown/scratch2/2023-swine-usda/swine8000/
 rule fastgather_gtdb:
@@ -47,14 +47,14 @@ rule fastgather_gtdb:
     resources:
         # limit to one fastgather with --resources rayon_exclude=1
         rayon_exclude=1,
-        mem_mb=25000
+        mem_mb=15000
     conda: 
         "branchwater"
     shell:
         """
         sourmash scripts fastgather {input.sig} \
         /group/ctbrowngrp/sourmash-db/gtdb-rs214/gtdb-rs214-k21.zip -k 21 \
-        --scaled 10000 -o {output.csv} -c 6
+        --scaled 10000 -o {output.csv} -c 10
         """
 
 
