@@ -1,4 +1,4 @@
-FASTGATHER, = glob_wildcards('../atlas/MAGs/drep_99/sigs/prot/{ident}.sig.gz')
+FASTGATHER, = glob_wildcards('../atlas/MAGs/all_genomes/prot/{ident}.sig.gz')
 
 PROT_DATABASE = 'protein/all_prot_CARD.sig.gz'
 NUCL_DATABASE = 'nucl/all_nucl_CARD.sig.gz'
@@ -6,15 +6,15 @@ KSIZE = [21, 31, 51]
 
 rule all:
     input:
-        expand('MAGs99/{ident}.{ksize}.gather.csv', ident=FASTGATHER, ksize=KSIZE),
-        expand('MAGs99/{ident}.{ksize}.gather.prot.csv', ident=FASTGATHER, ksize=KSIZE)
+        expand('MAGsall/{ident}.{ksize}.gather.csv', ident=FASTGATHER, ksize=KSIZE),
+        expand('MAGsall/{ident}.{ksize}.gather.prot.csv', ident=FASTGATHER, ksize=KSIZE)
 
 rule gather_n:
     input:
-       sig='../atlas/MAGs/drep_99/sigs/nucl/{ident}.sig.gz',
+       sig='../atlas/MAGs/all_genomes/nucl/{ident}.sig.gz',
        db=NUCL_DATABASE,
     output:
-        csv=touch('MAGs99/{ident}.{ksize}.gather.csv'),
+        csv=touch('MAGsall/{ident}.{ksize}.gather.csv'),
         #txt='test_MAGs/{ident}.{KSIZE}.gather.txt'
     shell: """
         sourmash gather -k {wildcards.ksize} {input.sig} {input.db} \
@@ -24,10 +24,10 @@ rule gather_n:
 
 rule gather_p:
     input:
-       sig='../atlas/MAGs/drep_99/sigs/prot/{ident}.sig.gz',
+       sig='../atlas/MAGs/all_genomes/prot/{ident}.sig.gz',
        db=PROT_DATABASE,
     output:
-        csv=touch('MAGs99/{ident}.{ksize}.gather.prot.csv'),
+        csv=touch('MAGsall/{ident}.{ksize}.gather.prot.csv'),
         #txt='test_MAGs/{ident}.{KSIZE}.gather.prot.txt'
     shell: """
         sourmash gather -k {wildcards.ksize} {input.sig} {input.db} \
