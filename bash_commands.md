@@ -21,14 +21,14 @@ snakemake --use-conda --cluster-config cluster_snake.json -p --rerun-triggers mt
 # also run gather for all these with just gtdbk
 # create a sourmash zip and rerun
 # srun for smash
-srun --account=ctbrowngrp -p bmm -J smashamr -t 1:00:00 -c 6 --mem=25gb --pty bash
+srun --account=ctbrowngrp -p bmm -J smashamr -t 2:00:00 -c 6 --mem=25gb --pty bash
 srun --account=ctbrowngrp -p bmm -J bin -t 4:00:00 -c 12 --mem=50gb --pty bash
 srun --account=ctbrowngrp -p med2 -J smash -t 3:00:00 -c 1 --mem=30gb --pty bash
 srun --account=ctbrowngrp -p bmm -J viralbowtie -t 12:00:00 -c 12 --mem=30gb --pty bash
 
 
 # to run the smash pipeline
-srun --account=ctbrowngrp -p med2 -J smash -t 4:00:00 -c 10 --mem=20gb --pty bash
+srun --account=ctbrowngrp -p med2 -J smash -t 4:00:00 -c 32 --mem=20gb --pty bash
 snakemake --use-conda --resources mem_mb=75000 --rerun-triggers mtime -c 100 --rerun-incomplete -k --latency-wait 30
 
 mamba activate snakemake
@@ -36,7 +36,7 @@ snakemake --use-conda --resources mem_mb=75000 --rerun-triggers mtime -c 100 --r
 
 
 snakemake --use-conda -s Snakefile_gather --resources mem_mb=20000 --rerun-triggers mtime -c --rerun-incomplete -k
-snakemake --resources mem_mb=20000 --rerun-triggers mtime -c 10 --rerun-incomplete -k
+snakemake --resources mem_mb=25000 --rerun-triggers mtime -c 6 --rerun-incomplete -k
 
 mamba activate sourmash 
 cd atlas/MAGs/genomes/
@@ -77,7 +77,7 @@ mamba activate branchwater
 
 for f in *.fa
 do
-echo sourmash sketch dna -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 $f --name ${f%.fa*} -o ../sigs/${f%.fa*}.sig.gz
+echo sourmash sketch dna -p k=21,scaled=100,k=31,scaled=100,k=51,scaled=100 $f --name ${f%.fa*} -o ../sigs/${f%.fa*}.sig.gz
 done | parallel -j 32
 
 # Concatenate all signatures

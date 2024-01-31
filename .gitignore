@@ -30,3 +30,6 @@ card/test_MAGs
 card/*.txt
 card/MAG*
 card/concat*
+AMRfinder/AMRFINDER_result/
+AMRfinder/prot_files/
+card/virs/ 

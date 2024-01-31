@@ -1,0 +1,40 @@
+# set the list of files
+SAMPLE, = glob_wildcards('../atlas/protfiles/{filename}.faa')
+DB_AMR = '/home/amhorst/mambaforge/envs/amrfinderplus/share/amrfinderplus/data/2023-11-15.1/'
+
+
+# final output
+rule all:
+    input:
+        expand('AMRFINDER_result/{filename}.tsv', filename=SAMPLE),
+        expand('AMRFINDER_result/{filename}.nucl.tsv', filename=SAMPLE),
+    
+
+# run amrfinder using x threads against protein. (HMM + blastp)
+rule amrfinder:
+    input:
+       faa='../atlas/protfiles/{ident}.faa',
+    output:
+        csv=touch('AMRFINDER_result/{ident}.tsv'),
+    conda: 
+        "amrfinder.env.yml"
+    threads: 1
+    shell:
+        """
+        amrfinder -p {input.faa} --threads {threads} \
+        -o {output.csv} --plus --database {DB_AMR}
+        """
+# run amrfinder using x threads against protein. (HMM + blastp)
+rule amrfinder_n:
+    input:
+       fna='../atlas/protfiles/{nuclfile}.fna',
+    output:
+        csv=touch('AMRFINDER_result/{nuclfile}.nucl.tsv'),
+    conda: 
+        "amrfinder.env.yml"
+    threads: 1
+    shell:
+        """
+        amrfinder -p {input.fna} --threads {threads} \
+        -o {output.csv} --plus --database {DB_AMR}
+        """
