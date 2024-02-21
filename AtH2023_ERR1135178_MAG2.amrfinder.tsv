@@ -1,2 +1,0 @@
-Protein identifier	Gene symbol	Sequence name	Scope	Element type	Element subtype	Class	Subclass	Method	Target length	Reference sequence length	% Coverage of reference sequence	% Identity to reference sequence	Alignment length	Accession of closest sequence	Name of closest sequence	HMM id	HMM description
-AtH2023_ERR1135178_MAG2_160_42	abc-f	ABC-F type ribosomal protection protein	core	AMR	AMR	MACROLIDE	MACROLIDE	HMM	496	494	98.58	56.33	490	WP_002294513.1	ABC-F type ribosomal protection protein	NF000355.3	ABC-F type ribosomal protection protein

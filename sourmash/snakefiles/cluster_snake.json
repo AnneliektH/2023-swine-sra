@@ -1,0 +1,53 @@
+# json file
+# cluster.json - configuration file for cluster
+
+{
+    "__default__" :
+    {
+        "account" : "ctbrowngrp",
+        "time" : "1:00:00",
+        "job_name" : "snakemake",
+        "nodes" : 1,
+        "ntasks": 1,
+        "partition" : "bml",
+        "output": "out/snake_%j.out", 
+        "error": "err/snake_%j.err" 
+    },
+    "fastgather_concat" :
+    {
+        "time" : "0:05:00",
+        "ntasks" : 1, 
+        "partition" : "bml",
+        "job_name" : "concat",
+        "output": "out/concat_snake_%j.out",
+        "error": "err/concat_snake_%j.err"
+    },
+    "fastgather_gtdb" :
+    {
+        "time" : "5:00:00",
+        "ntasks" : 6, 
+        "partition" : "bmm",
+        "job_name" : "fg_gtdb",
+        "output": "out/gtdb_snake_%j.out",
+        "error": "err/gtdb_snake_%j.err"
+    },
+        "fastgather_vir" :
+    {
+        "time" : "5:00:00",
+        "ntasks" : 6, 
+        "partition" : "bmm",
+        "job_name" : "fg_vir",
+        "output": "out/vir_snake_%j.out",
+        "error": "err/vir_snake_%j.err"
+    },
+        "fastgather_MAG" :
+    {
+        "time" : "5:00:00",
+        "ntasks" : 6, 
+        "partition" : "bmm",
+        "job_name" : "fg_MAG",
+        "output": "out/mag_snake_%j.out",
+        "error": "err/mag_snake_%j.err"
+    }
+
+}

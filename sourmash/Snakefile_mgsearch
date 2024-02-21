@@ -1,0 +1,36 @@
+# Set samples and queries
+SAMPLES, = glob_wildcards('./sig_files/sketch_reads/{ident}.sig.gz')
+QUERYS, = glob_wildcards('./sig_files/signatures_concat/{ident}.sig.gz')
+
+
+rule all:
+    input:
+ #       expand('mgmanysearch/{query}_samples.gather.csv', query=QUERYS),
+        expand('mgmanysearch/{query}/{sample}.gather.csv', query=QUERYS, sample=SAMPLES),
+
+# Do mgsearch, 1 metag per 1 list of queries
+# Because if time runs out, then at leaset part will be done
+rule do_mgsearch:
+    input:
+        sample='sig_files/sketch_reads/{sample}.sig.gz',
+        query='sig_files/signatures_concat/{query}.sig.gz',
+    output:
+        csv='mgmanysearch/{query}/{sample}.gather.csv'
+    shell: """
+    sourmash scripts mgmanysearch --queries {input.query} \
+    --against {input.sample} -k 21 --scaled 1000 -o {output.csv} 
+    """
+
+    
+# Can either do mgmany seach, but this may take long for this many samples + MAGs
+# rule do_mgmanysearch:
+#     input:
+#         query='sig_files/signatures_concat/{query}.sig.gz',
+#     output:
+#         csv='mgmanysearch/{query}_samples.gather.csv'
+#     shell: """
+#     sourmash scripts mgmanysearch --queries {input.query} \
+#     --against ./sig_files/sketch_reads/*.sig.gz -k 21 --scaled 1000 -o {output.csv} 
+#     """
+
+

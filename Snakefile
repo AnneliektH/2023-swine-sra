@@ -3,12 +3,12 @@ import os
 import pandas as pd
 
 # include snakefiles
-include: "sra_download.smk"
-include: "fasterq_dump.smk"
-include: "atlas.smk"
-include: "vOTU.smk"
-include: "mv_mags.smk"
-include: "sourmash_gather.smk"
+include: "snakefiles/sra_download.smk"
+include: "snakefiles/fasterq_dump.smk"
+include: "snakefiles/atlas.smk"
+include: "snakefiles/vOTU.smk"
+include: "snakefiles/mv_mags.smk"
+include: "snakefiles/sourmash_gather.smk"
 
 # set configfile with samplenames
 configfile: "config.yaml"

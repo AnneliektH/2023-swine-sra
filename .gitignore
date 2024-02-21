@@ -33,3 +33,9 @@ card/concat*
 AMRfinder/AMRFINDER_result/
 AMRfinder/prot_files/
 card/virs/ 
+smash_abund/
+sourmash/votus/
+sourmash/sketch_vOTUs/
+sourmash/mgmanysearch/
+sourmash/sig_files/
+bowtie2/
