@@ -21,7 +21,7 @@ snakemake --use-conda --cluster-config cluster_snake.json -p --rerun-triggers mt
 # also run gather for all these with just gtdbk
 # create a sourmash zip and rerun
 # srun for smash
-srun --account=ctbrowngrp -p med2 -J mgmanysearch -t 48:00:00 -c 1 --mem=50gb --pty bash
+srun --account=ctbrowngrp -p med2 -J smash -t 48:00:00 -c 36 --mem=30gb --pty bash
 srun --account=ctbrowngrp -p bmm -J bin -t 4:00:00 -c 12 --mem=50gb --pty bash
 srun --account=ctbrowngrp -p med2 -J smash -t 3:00:00 -c 1 --mem=30gb --pty bash
 srun --account=ctbrowngrp -p bmm -J prodigal -t 36:00:00 -c 1 --mem=30gb --pty bash
@@ -58,12 +58,12 @@ mamba activate branchwater
 
 for f in *.fasta
 do
-echo sourmash sketch dna -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 $f --name ${f%.fasta*} -o ../sigs/${f%.fasta*}.sig.gz
+echo sourmash sketch dna -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 $f --name ${f%.fasta*} -o ../sigs/${f%.fasta*}.zip
 done | parallel -j 32
 
 # Concatenate all signatures
-sourmash sig cat *.sig.gz -o ../../../all-MAGs_21.zip && \
-sourmash sig collect *.sig.gz -o ../../../all-MAGs_21.sqlmf
+sourmash sig cat *.zip -o ../../../all-MAGs_21.zip && \
+sourmash sig collect *.zip -o ../../../all-MAGs_21.sqlmf
 
 # for viral sigs make individual fasta files too
 # Do with the deduplicated vOTUs 
@@ -80,12 +80,12 @@ mamba activate branchwater
 
 for f in *.fa
 do
-echo sourmash sketch dna -p k=21,scaled=100,k=31,scaled=100,k=51,scaled=100 $f --name ${f%.fa*} -o ../sigs/${f%.fa*}.sig.gz
+echo sourmash sketch dna -p k=21,scaled=100,k=31,scaled=100,k=51,scaled=100 $f --name ${f%.fa*} -o ../sigs/${f%.fa*}.zip
 done | parallel -j 32
 
 # Concatenate all signatures
-sourmash sig cat sigs/*.sig.gz -o ../all-votu_21.zip && \
-sourmash sig collect sigs/*.sig.gz -o ../all-votu_21.sqlmf
+sourmash sig cat sigs/*.zip -o ../all-votu_21.zip && \
+sourmash sig collect sigs/*.zip -o ../all-votu_21.sqlmf
 
 # check number of contigs
 # viral
@@ -128,24 +128,24 @@ sed 's/[>]//g' file.txt > filenocar.txt
 
  for f in $(cat ../../../genome_stats/240214_cdhit_votus.95.nc.txt)
  do
- mv $f.sig.gz ./95/
+ mv $f.zip ./95/
  done
 
 cd 95
-sourmash sig cat *.sig.gz -o ../../signatures_concat/
+sourmash sig cat *.zip -o ../../signatures_concat/
 
-mv *.sig.gz ../
+mv *.zip ../
 cd ..
 mkdir 99
  for f in $(cat ../../../genome_stats/240214_cdhit_votus.99.nc.txt)
  do
  echo $f
- mv $f.sig.gz ./99/
+ mv $f.zip ./99/
  done
 cd 99
-sourmash sig cat *.sig.gz -o ../../signatures_concat/
+sourmash sig cat *.zip -o ../../signatures_concat/
 
-mv *.sig.gz ../
+mv *.zip ../
 cd ..
 
 
@@ -215,7 +215,7 @@ do
 sourmash sketch dna \
 -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 \
 $f --name ${f%.fasta*} -o \
-../../../../../sourmash/sig_files/MAGs/${f%.fasta*}.sig.gz && mv $f ./smashsig_complete/
+../../../../../sourmash/sig_files/MAGs/${f%.fasta*}.zip && mv $f ./smashsig_complete/
 done | parallel -j 32
 
 # for votus
@@ -227,7 +227,7 @@ do
 echo sourmash sketch dna \
 -p k=21,scaled=1000,k=31,scaled=1000 \
 $f --name ${f%.fa*} \
--o ../sketch_vOTUs/${f%.fa*}.sig.gz && mv $f ./smashsig_complete/
+-o ../sketch_vOTUs/${f%.fa*}.zip && mv $f ./smashsig_complete/
 done | parallel -j 32
 
 # Do an mgmanysearch for abundance of vOTUs and MAGs in samples
@@ -239,3 +239,4 @@ sourmash scripts mgsearch ERR3211994_0.k15.sig ERR3211994.abund.k15.reads.sig.gz
 
 sourmash scripts mgmanysearch --queries ERR3211994.contigs.single.k15.sig.gz \
 --against ERR3211994.R1.abund.k15.reads.sig.gz -k 15 --scaled 100 -o mgmanysearch.abund.csv
+
