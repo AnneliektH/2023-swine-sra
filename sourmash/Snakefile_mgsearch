@@ -120,8 +120,7 @@ rule manifest_v:
     """
 
 
-# # Do mgsearch, 1 metag per 1 list of queries
-# # Because if time runs out, then at leaset part will be done
+# # Do mgsearch
 # rule do_mgsearch:
 #     input:
 #         sample='sig_files/sketch_reads/{sample}.sig.gz',
