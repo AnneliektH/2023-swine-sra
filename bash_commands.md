@@ -21,17 +21,17 @@ snakemake --use-conda --cluster-config cluster_snake.json -p --rerun-triggers mt
 # also run gather for all these with just gtdbk
 # create a sourmash zip and rerun
 # srun for smash
-srun --account=ctbrowngrp -p med2 -J smash -t 1:00:00 -c 6 --mem=30gb --pty bash
+srun --account=ctbrowngrp -p med2 -J smash -t 2:00:00 -c 32 --mem=30gb --pty bash
 srun --account=ctbrowngrp -p bmm -J bin -t 4:00:00 -c 12 --mem=50gb --pty bash
 srun --account=ctbrowngrp -p med2 -J smash -t 3:00:00 -c 1 --mem=30gb --pty bash
-srun --account=ctbrowngrp -p bmm -J prodigal -t 36:00:00 -c 1 --mem=30gb --pty bash
+srun --account=ctbrowngrp -p bmm -J prodigal -t 3:00:00 -c 1 --mem=30gb --pty bash
 
 # run atlas ins creen
 atlas run genomes --configfile ../../atlas_config.yaml \
 -w . --default-resources mem_mb=70000 -j 12
 
 # to run the smash pipeline
-srun --account=ctbrowngrp -p med2 -J readsig -t 6:00:00 -c 32 --mem=50gb --pty bash
+srun --account=ctbrowngrp -p med2 -J readsig -t 1:00:00 -c 32 --mem=50gb --pty bash
 snakemake --use-conda --resources mem_mb=50000 --rerun-triggers mtime -c 32 --rerun-incomplete -k --latency-wait 30
 
 mamba activate snakemake
@@ -126,9 +126,9 @@ sed 's/[>]//g' file.txt > filenocar.txt
  # move/copy files from a list into a new folder
  for f in $(cat MAGs.txt); do mv $f.fasta /folder/; done
 
- for f in $(cat ../../../genome_stats/240214_cdhit_votus.95.nc.txt)
+ for f in $(cat ../../../../genome_stats/genome_lists/MAGs.all.txt)
  do
- mv $f.zip ./95/
+ mv $f.zip ./all/
  done
 
 cd 95
@@ -215,7 +215,7 @@ do
 sourmash sketch dna \
 -p k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 \
 $f --name ${f%.fasta*} -o \
-../../../../../sourmash/sig_files/MAGs/${f%.fasta*}.zip && mv $f ./smashsig_complete/
+../../../../../sourmash/sig_files/MAGs2.0/${f%.fasta*}.zip
 done | parallel -j 32
 
 # for votus

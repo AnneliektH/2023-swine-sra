@@ -36,7 +36,11 @@ card/virs/
 smash_abund/
 sourmash/votus/
 sourmash/sketch_vOTUs/
+sourmash/viral_taxonomy/
+sourmash/subtract/
+
 sourmash/mgmanysearch/
 sourmash/sig_files/
 bowtie2/
 sourmash/manifests/
+fed_operon/

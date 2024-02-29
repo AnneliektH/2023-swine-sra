@@ -1,0 +1,76 @@
+SAMPLE, = glob_wildcards('mgmanysearch/fastmultigather.mag/{sample}.gather.csv')
+VIRDB = 'sig_files/signatures_concat/allvOTUs.zip',
+MAGDB = 'sig_files/signatures_concat/MAGs2.zip',
+DEDUP = ['all', 99, 95]
+
+# fastmultigather already done: from there go to picklist ->  mgmanysearch.
+rule all:
+    input:
+        expand('mgmanysearch/MAGs/{sample}.{dedup}.csv', sample=SAMPLE, dedup=DEDUP),
+
+rule concat_dedup:
+    input:
+        deduplist='../genome_stats/genome_lists/MAGs.{dedup}.txt',
+        csv='mgmanysearch/fastmultigather.mag/{sample}.gather.csv',
+    output:
+        dedup ='mgmanysearch/fastmultigather.mag/{sample}.{dedup}.csv'
+    shell:"""
+    csvtk join -f "match_name;1" {input.csv} {input.deduplist} > {output.dedup}
+    """
+
+rule manifest_smashm:
+    input:
+        dedup='mgmanysearch/fastmultigather.mag/{sample}.{dedup}.csv',
+    output:
+        mf='manifests/MAGs/{sample}.{dedup}.mf.csv',
+        ln=temporary('manifests/MAGs/{sample}.{dedup}.md5.csv'), 
+    shell:"""
+    csvtk cut -f match_md5 {input.dedup} > {output.ln}
+    sourmash sig check {MAGDB} --picklist {output.ln}:match_md5:md5 -m {output.mf}
+    """
+
+
+# Do mgmanysearch
+rule do_mgsearch_m:
+    input:
+        sample='sig_files/sketch_reads/{sample}.sig.gz',
+        mf='manifests/MAGs/{sample}.{dedup}.mf.csv',
+    output:
+        csv='mgmanysearch/MAGs/{sample}.{dedup}.csv'
+    shell: """
+    sourmash scripts mgmanysearch --queries {input.mf} \
+    --against {input.sample} -k 21 --scaled 1000 -o {output.csv} 
+    """
+
+# rule manifest_smashv:
+#     input:
+#         csv='gather_out/fastgatxher/allvOTUs/{sample}.fg.csv',
+#     output:
+#         mf='manifests/vOTUs/{sample}.mf.{dedup}.csv',
+#         ln=temporary('manifests/vOTUs/{sample}.list.csv')
+#     shell:"""
+#     csvtk cut -f match_md5 {input.csv} > {output.ln}
+#     sourmash sig check {MAGDB} --picklist {output.ln}:match_md5:md5 -m {output.mf}
+#     """
+
+
+
+
+
+
+
+
+# # Do mgmanysearch
+# rule do_mgsearch_v:
+#     input:
+#         sample='sig_files/sketch_reads/{sample}.sig.gz',
+#         mf='manifests/vOTUs/{sample}.mf.{dedup}.csv',
+#     output:
+#         csv='mgmanysearch/vOTU/{sample}.{dedup}.csv'
+#     shell: """
+#     sourmash scripts mgmanysearch --queries {input.mf} \
+#     --against {input.sample} -k 21 --scaled 1000 -o {output.csv} 
+#     """
+
+
+
