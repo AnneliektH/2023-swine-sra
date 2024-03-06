@@ -1,6 +1,7 @@
+import os.path
 SAMPLE, = glob_wildcards('mgmanysearch/fastmultigather.mag/{sample}.gather.csv')
 VIRDB = 'sig_files/signatures_concat/allvOTUs.zip',
-MAGDB = 'sig_files/signatures_concat/MAGs2.zip',
+MAGDB = os.path.abspath('sig_files/signatures_concat/MAGs2.zip'),
 DEDUP = ['all', 99, 95]
 
 # fastmultigather already done: from there go to picklist ->  mgmanysearch.
@@ -23,12 +24,9 @@ rule manifest_smashm:
         dedup='mgmanysearch/fastmultigather.mag/{sample}.{dedup}.csv',
     output:
         mf='manifests/MAGs/{sample}.{dedup}.mf.csv',
-        ln=temporary('manifests/MAGs/{sample}.{dedup}.md5.csv'), 
     shell:"""
-    csvtk cut -f match_md5 {input.dedup} > {output.ln}
-    sourmash sig check {MAGDB} --picklist {output.ln}:match_md5:md5 -m {output.mf}
+    sourmash sig check {MAGDB} --picklist {input.dedup}:match_md5:md5 -m {output.mf}
     """
-
 
 # Do mgmanysearch
 rule do_mgsearch_m:

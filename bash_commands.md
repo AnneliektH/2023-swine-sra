@@ -21,7 +21,7 @@ snakemake --use-conda --cluster-config cluster_snake.json -p --rerun-triggers mt
 # also run gather for all these with just gtdbk
 # create a sourmash zip and rerun
 # srun for smash
-srun --account=ctbrowngrp -p med2 -J smash -t 2:00:00 -c 32 --mem=30gb --pty bash
+srun --account=ctbrowngrp -p med2 -J smash -t 12:00:00 -c 32 --mem=30gb --pty bash
 srun --account=ctbrowngrp -p bmm -J bin -t 4:00:00 -c 12 --mem=50gb --pty bash
 srun --account=ctbrowngrp -p med2 -J smash -t 3:00:00 -c 1 --mem=30gb --pty bash
 srun --account=ctbrowngrp -p bmm -J prodigal -t 3:00:00 -c 1 --mem=30gb --pty bash
