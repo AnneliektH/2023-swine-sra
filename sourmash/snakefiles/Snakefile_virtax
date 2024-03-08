@@ -1,0 +1,37 @@
+FP_SCALE='ICTV/sc100'
+FASTGATHER, = glob_wildcards(FP_SCALE+'/{ident}.gather.csv')
+
+# 2 dbs to use for vir taxonomy, check difference in results.
+VIR_DATABASE_GB = '/group/ctbrowngrp/sourmash-db/genbank-2022.03/genbank-2022.03-viral-k21.zip',
+TAXDB_GB = '/group/ctbrowngrp/sourmash-db/genbank-2022.03/genbank-2022.03-viral.lineages.csv.gz',
+VIR_DATABASE_ICTV = '/home/ntpierce/2023-spillover/output.vmr/vmr_MSL38_v1.dna.zip',
+TAXDB_ICTV = '/home/ntpierce/2023-spillover/output.vmr/vmr_MSL38_v1.taxonomy.csv',
+
+
+rule all:
+    input:
+        expand(FP_SCALE+'/{ident}.fullgather.csv', ident=FASTGATHER),
+ #       expand(FP_SCALE+'/{ident}.tax.csv', ident=FASTGATHER)
+
+rule do_gather:
+    input:
+        sig='/group/ctbrowngrp2/scratch/annie/2023-swine-sra/sourmash/sig_files/sketch_vOTUs/high_qual/{ident}.sig.gz',
+        fastgather=FP_SCALE+'/{ident}.gather.csv',
+        db=VIR_DATABASE_ICTV,
+    output:
+        txt=FP_SCALE+'/{ident}.fullgather.txt',
+        csv=FP_SCALE+'/{ident}.fullgather.csv'
+    shell: """
+        sourmash gather -k 21 {input.sig} {input.db} \
+        --picklist {input.fastgather}:match_name:ident -o {output.csv} \
+        --threshold-bp=0 > {output.txt}
+    """
+rule tax_gather:
+    input:
+        csv=FP_SCALE+'/{ident}.fullgather.csv',
+        taxdb=TAXDB_ICTV,
+    output:
+        taxout = touch(FP_SCALE+'/{ident}.tax.csv'),
+    shell: """
+        sourmash tax genome -g {input.csv} -t {input.taxdb} > {output}
+    """
