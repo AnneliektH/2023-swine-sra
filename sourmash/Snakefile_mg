@@ -1,40 +1,40 @@
 import os.path
-SAMPLE, = glob_wildcards('mgmanysearch/fastmultigather.mag/{sample}.gather.csv')
-VIRDB = 'sig_files/signatures_concat/allvOTUs.zip',
+SAMPLE, = glob_wildcards('mgmanysearch/fastmultigather.votu.10kb/{sample}.gather.csv')
+VIRDB = os.path.abspath('sig_files/signatures_concat/allvOTUs.zip'),
 MAGDB = os.path.abspath('sig_files/signatures_concat/MAGs2.zip'),
 DEDUP = ['all', 99, 95]
 
 # fastmultigather already done: from there go to picklist ->  mgmanysearch.
 rule all:
     input:
-        expand('mgmanysearch/MAGs/{sample}.{dedup}.csv', sample=SAMPLE, dedup=DEDUP),
+        expand('mgmanysearch/vOTUs/{sample}.{dedup}.csv', sample=SAMPLE, dedup=DEDUP),
 
 rule concat_dedup:
     input:
-        deduplist='../genome_stats/genome_lists/MAGs.{dedup}.txt',
-        csv='mgmanysearch/fastmultigather.mag/{sample}.gather.csv',
+        deduplist='../genome_stats/genome_lists/vOTUs.{dedup}.txt',
+        csv='mgmanysearch/fastmultigather.votu.10kb/{sample}.gather.csv',
     output:
-        dedup ='mgmanysearch/fastmultigather.mag/{sample}.{dedup}.csv'
+        dedup ='mgmanysearch/fastmultigather.votu.10kb/{sample}.{dedup}.csv'
     shell:"""
     csvtk join -f "match_name;1" {input.csv} {input.deduplist} > {output.dedup}
     """
 
 rule manifest_smashm:
     input:
-        dedup='mgmanysearch/fastmultigather.mag/{sample}.{dedup}.csv',
+        dedup='mgmanysearch/fastmultigather.votu.10kb/{sample}.{dedup}.csv',
     output:
-        mf='manifests/MAGs/{sample}.{dedup}.mf.csv',
+        mf='manifests/vOTUs/{sample}.{dedup}.mf.csv',
     shell:"""
-    sourmash sig check {MAGDB} --picklist {input.dedup}:match_md5:md5 -m {output.mf}
+    sourmash sig check {VIRDB} --picklist {input.dedup}:match_md5:md5 -m {output.mf}
     """
 
 # Do mgmanysearch
 rule do_mgsearch_m:
     input:
         sample='sig_files/sketch_reads/{sample}.sig.gz',
-        mf='manifests/MAGs/{sample}.{dedup}.mf.csv',
+        mf='manifests/vOTUs/{sample}.{dedup}.mf.csv',
     output:
-        csv='mgmanysearch/MAGs/{sample}.{dedup}.csv'
+        csv='mgmanysearch/vOTUs/{sample}.{dedup}.csv'
     shell: """
     sourmash scripts mgmanysearch --queries {input.mf} \
     --against {input.sample} -k 21 --scaled 1000 -o {output.csv} 
