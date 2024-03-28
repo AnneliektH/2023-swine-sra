@@ -12,20 +12,20 @@ READS = config.get('reads', reads)
 # final output
 rule all:
     input:
-        expand('sig_files/sketch_reads/{read}.sig.gz', read=READS)
+        expand('sig_files/sketch_reads_s100/{read}.sig.gz', read=READS)
 
 # sketch
 rule sketch_read:
     input:
        fq='../atlas/atlas_{read}/{read}/sequence_quality_control/{read}_QC_R1.fastq.gz',
     output:
-        sig='sig_files/sketch_reads/{read}.sig.gz',
-    threads: 8
+        sig='sig_files/sketch_reads_s100/{read}.sig.gz',
+    threads: 6
     shell:
         """
         module load parallel
         sourmash sketch dna \
-        {input.fq} -p abund,k=21,scaled=1000,k=31,scaled=1000,k=51,scaled=1000 \
+        {input.fq} -p abund,k=21,scaled=100,k=31,scaled=100 \
         -o {output.sig} --name {wildcards.read} | parallel -j {threads}
         """
 
