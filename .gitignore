@@ -44,3 +44,13 @@ sourmash/sig_files/
 bowtie2/
 sourmash/manifests/
 fed_operon/
+pangenome/ncbi_dataset/
+pangenome/own_MAGs
+pangenome/ref_genomes
+pangenome/gff
+pangenome/prokka
+pangenome/sourmash_db-cover
+results/
+pangenome
+resources
+workflow
