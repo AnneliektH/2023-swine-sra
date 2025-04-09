@@ -1,0 +1,10 @@
+__default__:
+# default parameter for all rules
+  account: amhorst
+  mem: 1G
+
+get_read_stats:
+  queue: long
+  account: amhorst
+  time_min:  # min
+  threads:

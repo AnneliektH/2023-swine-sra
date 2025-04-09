@@ -1,0 +1,31 @@
+# imports
+import os
+import pandas as pd
+
+# include snakefiles
+include: "rules/bowtie.smk"
+
+# set configfile with samplenames
+configfile: "../config/config.yaml"
+
+
+# Load the metadata file
+metadata = pd.read_csv(config['metadata_file_path'], usecols=['Run'])
+
+# Create a list of run ids
+samples = metadata['Run'].tolist()
+
+# Define samples
+SAMPLES = config.get('samples', samples)
+
+wildcard_constraints:
+    sample='\w+',
+
+#BT2DBS = ['MAG.95s', 'MAG.99s', 'vOTU.99','vOTU.95','vOTU.all']
+BT2DBS = ['vOTU.99','vOTU.95','vOTU.all']
+# SAMPLE, = glob_wildcards('../atlas/atlas_{sample}/{sample}/sequence_quality_control/{sample}_QC_R1.fastq.gz')
+#BT2DBS, = glob_wildcards('../resources/bt2_ref/{btdb}.1.bt2l')
+
+rule all:
+    input:
+        expand('../results/bowtie2/mapping/{bt2db}/{sample}.bam', sample=SAMPLES, bt2db=BT2DBS),

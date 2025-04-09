@@ -1,0 +1,8 @@
+name: virsorter2
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - virsorter=2
+prefix: /home/amhorst/mambaforge/envs/virsorter2

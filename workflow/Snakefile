@@ -1,0 +1,33 @@
+# imports
+import os
+import pandas as pd
+
+# include snakefiles
+include: "rules/sra_download.smk"
+include: "rules/fasterq_dump.smk"
+include: "rules/atlas.smk"
+include: "rules/vOTU.smk"
+include: "rules/mv_mags.smk"
+include: "rules/sourmash_gather.smk"
+
+# set configfile with samplenames
+configfile: "config/config.yaml"
+
+# define output atlas dir
+atlas_dir = 'atlas'
+
+# Load the metadata file
+#metadata = pd.read_csv(config['metadata_file_path'], usecols=['Run'])
+metadata = pd.read_csv(config['metadata_file_path'], usecols=['Run'])
+
+# Create a list of run ids
+samples = metadata['Run'].tolist()
+
+# Define samples
+SAMPLES = config.get('samples', samples)
+
+
+rule all:
+    input:
+        expand("../results/check/move_{sample}.check", sample=SAMPLES,), 
+        #expand("../results/check/{sample}_rename.check", sample=SAMPLES)

@@ -1,0 +1,34 @@
+FASTGATHER, = glob_wildcards('./{ident}.sig.gather.csv')
+
+GTDB_DATABASE = '/group/ctbrowngrp/sourmash-db/gtdb-rs214/gtdb-rs214-k21.zip'
+GTDB_SQLDB = 'gtdb-rs214.taxdb'
+
+
+rule all:
+    input:
+        expand('fullgather/{ident}.gather.csv', ident=FASTGATHER),
+        expand('tax/{ident}.tax.csv', ident=FASTGATHER)
+
+rule do_gather:
+    input:
+        sig='/group/ctbrowngrp2/scratch/annie/2023-swine-sra/atlas/MAGs/genomes/all_fasta/sigs/{ident}.sig',
+        fastgather='{ident}.sig.gather.csv',
+        db=GTDB_DATABASE,
+    output:
+        txt='fullgather/{ident}.gather.txt',
+        csv='fullgather/{ident}.gather.csv'
+    shell: """
+        sourmash gather -k 21 {input.sig} {input.db} \
+           --picklist {input.fastgather}:match_name:ident -o {output.csv} \
+           --threshold-bp=0 > {output.txt}
+    """
+
+rule tax_gather:
+    input:
+        csv='fullgather/{ident}.gather.csv',
+        taxdb=GTDB_SQLDB,
+    output:
+        taxout = 'tax/{ident}.tax.csv',
+    shell: """
+        sourmash tax genome -g {input.csv} -t {input.taxdb} > {output}
+    """
